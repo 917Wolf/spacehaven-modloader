@@ -5,12 +5,14 @@ import platform
 import subprocess
 import threading
 import traceback
-import winreg
+#moved to discovery
+#import winreg
 from collections import OrderedDict
 from tkinter import *
 from tkinter import filedialog, messagebox
 
-from steamfiles import acf
+#moved to discovery
+#from steamfiles import acf
 
 import loader.extract
 import loader.load
@@ -19,7 +21,7 @@ import ui.header
 import ui.launcher
 import ui.log
 import version
-
+''' moved this to discovery
 POSSIBLE_SPACEHAVEN_LOCATIONS = [
     # MacOS
     "/Applications/spacehaven.app",
@@ -42,6 +44,7 @@ POSSIBLE_SPACEHAVEN_LOCATIONS = [
     "~/Games/SpaceHaven/spacehaven",
     ".local/share/Steam/steamapps/common/SpaceHaven/spacehaven",
 ]
+'''
 DatabaseHandler = ui.database.ModDatabase
 
 class Window(Frame):
@@ -142,8 +145,15 @@ class Window(Frame):
         self.quickLaunchClear.pack(side = RIGHT, expand = False, padx=8, pady=4)
         #self.modListOpenFolder.grid(column = 1, padx=4, pady=4)
         
-        self.autolocateSpacehaven()
-
+        discover.discovergame_bad.autolocateSpacehaven()
+        #extracted from discovery
+        self.checkForLoadedMods()
+        self.gameInfo = ui.gameinfo.GameInfo(self.jarPath)
+        self.spacehavenText.delete(0, 'end')
+        self.spacehavenText.insert(0, self.gamePath)
+        DatabaseHandler(self.modPath, self.gameInfo)
+        self.refreshModList()
+''' this got moved to discovery
     def autolocateSpacehaven(self):
         self.gamePath = None
         self.jarPath = None
@@ -212,15 +222,16 @@ class Window(Frame):
         ui.log.log("  modPath: {}".format(self.modPath))
         ui.log.log("  jarPath: {}".format(self.jarPath))
         
-        
+        #move this up and add a break after validation?!
         with open("previous_spacehaven_path.txt", 'w') as f:
             f.write(path)
-        
+        #this should not be done by discovery
         self.checkForLoadedMods()
-
+        #this should not be done by discovery
         self.gameInfo = ui.gameinfo.GameInfo(self.jarPath)
-
+        #this should not be done by discovery
         self.spacehavenText.delete(0, 'end')
+        #this should not be done by discovery
         self.spacehavenText.insert(0, self.gamePath)
         
         self.modPath = [self.modPath, ]
@@ -231,10 +242,11 @@ class Window(Frame):
                         self.modPath.append(mod_path.strip())
         except:
             pass
-        
+        #this should not be done by discovery
         DatabaseHandler(self.modPath, self.gameInfo)
+        #this should not be done by discovery
         self.refreshModList()
-
+'''
     def checkForLoadedMods(self):
         if self.jarPath is None:
             return
